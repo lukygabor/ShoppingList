@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-//ballala
+
     public void setPreferences() {
         //Here we create a new activity and we instruct the
         //Android system to start it
