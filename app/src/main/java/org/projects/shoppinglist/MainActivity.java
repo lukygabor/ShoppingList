@@ -1,11 +1,13 @@
 package org.projects.shoppinglist;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -142,9 +144,11 @@ public class MainActivity extends AppCompatActivity {
 
                 EditText foodlist = (EditText) findViewById(R.id.foodin);
                 String foodtext = foodlist.getText().toString();
+                foodlist.setText("");
 
                 EditText foodnum = (EditText) findViewById(R.id.foodnumber);
                 String foodquantity = foodnum.getText().toString();
+                foodnum.setText("");
 
                 Spinner foodspinner = (Spinner) findViewById(R.id.spinnerfood);
                 String foodpackagetype = String.valueOf(foodspinner.getSelectedItem());
@@ -218,24 +222,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button webViewButton =(Button)findViewById(R.id.webViewButton);
+        webViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://etilbudsavis.dk"));
+                startActivity(browserIntent);
+            }
+        });
+
+
         }
-
-
-
-    /*
-
-    public void webClick(View v)
-    {
-        switch(v.getId()) {
-            case R.id.webViewButton:
-                Intent intent = new Intent(this, Webview.class);
-                intent.putExtra("weblink", "https://etilbudsavis.dk/");
-                startActivity(intent);
-                break;
-        }
-    }
-*/
-
 
 
 
