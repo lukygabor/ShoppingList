@@ -24,14 +24,14 @@ import android.content.Intent;
 import com.firebase.client.Firebase;
 
 import com.firebase.ui.FirebaseListAdapter;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-
-
 
 
 //creating the adapter
@@ -41,19 +41,24 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Product> bag = new ArrayList<Product>();
 
 
-
     Firebase zref;
     FirebaseListAdapter<Product> fireAdapter;
-    public FirebaseListAdapter getMyAdapter() {return fireAdapter;}
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+    public FirebaseListAdapter getMyAdapter() {
+        return fireAdapter;
+    }
     //public Product getItem (int index) {return getMyAdapter().getItem(index);}
-
-
 
 
     Product lastDeletedProduct;
     int lastDeletedPosition;
-    public void saveCopy()
-    {
+
+    public void saveCopy() {
         lastDeletedPosition = listView.getCheckedItemPosition();
         lastDeletedProduct = fireAdapter.getItem(lastDeletedPosition);
     }
@@ -99,9 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
         //we save the whole array, in bag, in case we need it
 
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
 
-            bag = savedInstanceState.getParcelableArrayList("bag"); }
+            bag = savedInstanceState.getParcelableArrayList("bag");
+        }
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -109,17 +115,13 @@ public class MainActivity extends AppCompatActivity {
 
         zref = new Firebase("https://sweltering-torch-5979.firebaseio.com//items");
         fireAdapter = new FirebaseListAdapter<Product>(this, Product
-                .class, android.R.layout.simple_list_item_checked, zref){
+                .class, android.R.layout.simple_list_item_checked, zref) {
             @Override
-            protected void populateView(View v, Product product, int i){
+            protected void populateView(View v, Product product, int i) {
                 TextView text = (TextView) v.findViewById(android.R.id.text1);
                 text.setText(product.toString());
             }
         };
-
-
-
-
 
 
         //getting our listiew - you can check the ID in the xml to see that it
@@ -128,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
         //here we create a new adapter linking the bag and the
         //listview
 
-       // adapter =  new ArrayAdapter<Product>(this,
-         //       android.R.layout.simple_list_item_checked,bag );
+        // adapter =  new ArrayAdapter<Product>(this,
+        //       android.R.layout.simple_list_item_checked,bag );
 
         //setting the adapter on the listview
         listView.setAdapter(fireAdapter);
@@ -148,13 +150,13 @@ public class MainActivity extends AppCompatActivity {
 
                 EditText foodnum = (EditText) findViewById(R.id.foodnumber);
                 String foodquantity = foodnum.getText().toString();
-                foodnum.setText("");
+               foodnum.setText("");
 
                 Spinner foodspinner = (Spinner) findViewById(R.id.spinnerfood);
                 String foodpackagetype = String.valueOf(foodspinner.getSelectedItem());
 
 
-               // bag.add(new Product(foodquantity, foodpackagetype, foodtext));
+                // bag.add(new Product(foodquantity, foodpackagetype, foodtext));
 
                 Product p = new Product(foodquantity, foodpackagetype, foodtext);
                 zref.push().setValue(p);
@@ -189,14 +191,12 @@ public class MainActivity extends AppCompatActivity {
                 SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
                 saveCopy();
 
-            for(int i = fireAdapter.getCount() - 1; i>= 0; i--)
-            {
-                if(checkedItems.get(i))
-                {
-                    //bag.remove(fireAdapter.getItem(i));
-                    getMyAdapter().getRef(i).setValue(null);
+                for (int i = fireAdapter.getCount() - 1; i >= 0; i--) {
+                    if (checkedItems.get(i)) {
+                        //bag.remove(fireAdapter.getItem(i));
+                        getMyAdapter().getRef(i).setValue(null);
+                    }
                 }
-            }
                 getMyAdapter().notifyDataSetChanged();
 
 
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("UNDO", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                               // bag.add(lastDeletedPosition,lastDeletedProduct);
+                                // bag.add(lastDeletedPosition,lastDeletedProduct);
 
                                 zref.push().setValue(lastDeletedProduct);
 
@@ -222,23 +222,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button webViewButton =(Button)findViewById(R.id.webViewButton);
-        webViewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://etilbudsavis.dk"));
-                startActivity(browserIntent);
-            }
-        });
+        Button webViewButton = (Button) findViewById(R.id.webViewButton);
+        if(webViewButton!=null) {
+            webViewButton.setOnClickListener(new View.OnClickListener() {
 
-
+                @Override
+                public void onClick(View v) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://etilbudsavis.dk"));
+                    startActivity(browserIntent);
+                }
+            });
         }
+        else
+            Log.e("BB", "null");
+
+    }
 
 
-
-            @Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==1) //exited our preference screen
+        if (requestCode == 1) //exited our preference screen
         {
             Toast toast =
                     Toast.makeText(getApplicationContext(), "Settings updated!", Toast.LENGTH_LONG);
@@ -250,8 +253,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     public void setPreferences() {
         //Here we create a new activity and we instruct the
         //Android system to start it
@@ -261,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
         //we can use this, if we need to know when the user exists our preference screens
         startActivityForResult(intent, 1);
     }
-
 
 
     @Override
@@ -278,13 +278,13 @@ public class MainActivity extends AppCompatActivity {
 
                 showDialog();
 
-        //Code to run when the Clear is clicked
+                //Code to run when the Clear is clicked
                 return true;
             case R.id.action_settings:
 
 
                 setPreferences();
-        //Code to run when the settings item is clicked
+                //Code to run when the settings item is clicked
                 return true;
             case R.id.action_share:
 
@@ -303,25 +303,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-            @Override
-            public void onSaveInstanceState(Bundle savedInstanceState){
-            savedInstanceState.putParcelableArrayList("bag", bag);
-        }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelableArrayList("bag", bag);
+    }
 
 
-    public String convertListToString()
-    {
+    public String convertListToString() {
         String result = "Here is the shopping list: ";
-        for (int i = 0; i<fireAdapter.getCount();i++)
-        {
+        for (int i = 0; i < fireAdapter.getCount(); i++) {
             Product p = (Product) fireAdapter.getItem(i);
-            result = result + "\n"+ p;
+            result = result + "\n" + p;
         }
         return result;
     }
 
-
-    }
+}
 
 
 
