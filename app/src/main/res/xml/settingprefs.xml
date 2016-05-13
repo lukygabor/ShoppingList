@@ -6,18 +6,11 @@
         android:summary="Your email address"
         android:title="Email" />
 
-    <!--<ListPreference-->
-       <!-- -->
-        <!--android:entries="@array/gender_type"-->
-        <!--android:entryValues="@array/gender_values"-->
-        <!--android:key="gender"-->
-        <!--android:summary="Select a gender for your game character"-->
-        <!--android:title="Game Character Gender" />-->
 
     <CheckBoxPreference
         android:key="sound"
-        android:summary="Do you want to enable game sound?"
-        android:title="Enable Sound?" />
+        android:summary="Do you want to enable in-menu sound?"
+        android:title="Enable Sound" />
 
 
 

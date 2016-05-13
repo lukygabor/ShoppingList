@@ -18,7 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import com.firebase.client.Firebase;
 
 import com.firebase.ui.FirebaseListAdapter;
@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
                 getMyAdapter().notifyDataSetChanged();
 
 
-
             }
 
         });
@@ -222,7 +221,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    @Override
+
+    /*
+
+    public void webClick(View v)
+    {
+        switch(v.getId()) {
+            case R.id.webViewButton:
+                Intent intent = new Intent(this, Webview.class);
+                intent.putExtra("weblink", "https://etilbudsavis.dk/");
+                startActivity(intent);
+                break;
+        }
+    }
+*/
+
+
+
+
+            @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode==1) //exited our preference screen
         {
